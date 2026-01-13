@@ -1114,6 +1114,38 @@ function ParticleInfo:get_b() end
 ---@field parent BaseComponent|nil Parent component
 local BaseComponent = {}
 
+---Set X position
+---@param x number X position
+function BaseComponent:set_x(x) end
+
+---Set Y position
+---@param y number Y position
+function BaseComponent:set_y(y) end
+
+---Set X scale
+---@param scale_x number X scale
+function BaseComponent:set_scale_x(scale_x) end
+
+---Set Y scale
+---@param scale_y number Y scale
+function BaseComponent:set_scale_y(scale_y) end
+
+---Set overall scale
+---@param scale number Overall scale
+function BaseComponent:set_scale(scale) end
+
+---Set whether scale rate is fixed
+---@param is_scale_rate_fixed boolean Whether scale rate is fixed
+function BaseComponent:set_is_scale_rate_fixed(is_scale_rate_fixed) end
+
+---Set whether visible
+---@param is_visible boolean Whether visible
+function BaseComponent:set_is_visible(is_visible) end
+
+---Set whether active
+---@param is_active boolean Whether active
+function BaseComponent:set_is_active(is_active) end
+
 ---Add child component
 ---@param child BaseComponent
 function BaseComponent:add_child(child) end
@@ -1140,6 +1172,22 @@ function BaseComponent:remove_child(child) end
 ---@field fixed_height number Fixed height
 local BaseRectComponent = {}
 
+---Set width
+---@param width number Width
+function BaseRectComponent:set_width(width) end
+
+---Set height
+---@param height number Height
+function BaseRectComponent:set_height(height) end
+
+---Set fixed width
+---@param fixed_width number Fixed width
+function BaseRectComponent:set_fixed_width(fixed_width) end
+
+---Set fixed height
+---@param fixed_height number Fixed height
+function BaseRectComponent:set_fixed_height(fixed_height) end
+
 ---@class ScreenRenderer : BaseRectComponent
 ---@field can_exit_with_esc boolean Can exit with ESC
 ---@field window_width number Window width
@@ -1164,6 +1212,10 @@ function HudRenderer:close_hud() end
 ---@class ScriptImageRenderer : BaseRectComponent
 ---@field image ImageResource Image resource
 local ScriptImageRenderer = {}
+
+---Set image resource
+---@param image ImageResource Image resource
+function ScriptImageRenderer:set_image(image) end
 
 ---Get UV1 coordinates
 ---@return number u, number v
@@ -1205,14 +1257,46 @@ local ScriptClickableRenderer = {}
 ---@field color number Packed color value
 local ScriptColorRenderer = {}
 
+---Set red component
+---@param r number Red (0-255)
+function ScriptColorRenderer:set_r(r) end
+
+---Set green component
+---@param g number Green (0-255)
+function ScriptColorRenderer:set_g(g) end
+
+---Set blue component
+---@param b number Blue (0-255)
+function ScriptColorRenderer:set_b(b) end
+
+---Set alpha component
+---@param a number Alpha (0-255)
+function ScriptColorRenderer:set_a(a) end
+
+---Set color
+---@param color number Packed color value
+function ScriptColorRenderer:set_color(color) end
+
 ---@class ScriptDefaultTextRenderer : BaseComponent
 ---@field text string Text content
 ---@field color number Text color
 local ScriptDefaultTextRenderer = {}
 
+---Set text
+---@param text string Text content
+function ScriptDefaultTextRenderer:set_text(text) end
+
+---Set text color
+---@param color number Text color
+function ScriptDefaultTextRenderer:set_color(color) end
+
 ---@class ScriptItemRenderer : BaseComponent
 ---@field item LuaItemStack Item to render
 local ScriptItemRenderer = {}
+
+---Set item
+---@param item LuaItemStack Item to render
+function ScriptItemRenderer:set_item(item) end
 
 ---@class ImageResource
 local ImageResource = {}
