@@ -316,17 +316,17 @@ aris.game.world = {}
 ---@return LuaServerWorld
 function aris.game.world.get_world(world) end
 
----Get the overworld
----@return LuaServerWorld
-function get_overworld() end
+---The overworld dimension
+---@type LuaServerWorld|nil
+aris.game.world.overworld = nil
 
----Get the nether
----@return LuaServerWorld
-function get_nether() end
+---The nether dimension
+---@type LuaServerWorld|nil
+aris.game.world.nether = nil
 
----Get the end
----@return LuaServerWorld
-function get_end() end
+---The end dimension
+---@type LuaServerWorld|nil
+aris.game.world.end = nil
 
 ---============================================
 --- aris.game.hook Library (Server Hooks)
@@ -1105,13 +1105,16 @@ function ParticleInfo:get_b() end
 ---@class BaseComponent
 ---@field x number X position
 ---@field y number Y position
+---@field rotation number Rotation in degrees
+---@field anchor_x number Anchor point X (pivot point for rotation/scale)
+---@field anchor_y number Anchor point Y (pivot point for rotation/scale)
 ---@field is_scale_rate_fixed boolean Whether scale rate is fixed
 ---@field scale_x number X scale
 ---@field scale_y number Y scale
 ---@field scale number Overall scale
 ---@field is_visible boolean Whether visible
 ---@field is_active boolean Whether active
----@field parent BaseComponent|nil Parent component
+---@field parent BaseComponent|nil Parent component (read-only)
 local BaseComponent = {}
 
 ---Set X position
@@ -1121,6 +1124,18 @@ function BaseComponent:set_x(x) end
 ---Set Y position
 ---@param y number Y position
 function BaseComponent:set_y(y) end
+
+---Set rotation in degrees
+---@param rotation number Rotation angle
+function BaseComponent:set_rotation(rotation) end
+
+---Set anchor X position (pivot point)
+---@param anchor_x number Anchor X
+function BaseComponent:set_anchor_x(anchor_x) end
+
+---Set anchor Y position (pivot point)
+---@param anchor_y number Anchor Y
+function BaseComponent:set_anchor_y(anchor_y) end
 
 ---Set X scale
 ---@param scale_x number X scale
@@ -1152,11 +1167,19 @@ function BaseComponent:add_child(child) end
 
 ---Add render hook
 ---The function invoked on each frame
----@param fn function Function to execute on each frame
+---@param fn fun(mx: number, my: number, delta: number) Function to execute on each frame (scaled_mouse_x, scaled_mouse_y, tick_delta)
 function BaseComponent:add_render_hook(fn) end
 
 ---Clear render hooks
 function BaseComponent:clear_render_hook() end
+
+---Add tick hook
+---The function invoked on each tick
+---@param fn function Function to execute on each tick
+function BaseComponent:add_tick_hook(fn) end
+
+---Clear tick hooks
+function BaseComponent:clear_tick_hook() end
 
 ---Clear child components
 function BaseComponent:clear_child() end
@@ -1164,6 +1187,18 @@ function BaseComponent:clear_child() end
 ---Remove child component
 ---@param child BaseComponent
 function BaseComponent:remove_child(child) end
+
+---Convert global screen coordinates to local coordinates relative to this component
+---@param mx number Global X coordinate
+---@param my number Global Y coordinate
+---@return number local_x, number local_y
+function BaseComponent:get_local_coordinate(mx, my) end
+
+---Convert local coordinates to global screen coordinates
+---@param lx number Local X coordinate
+---@param ly number Local Y coordinate
+---@return number global_x, number global_y
+function BaseComponent:get_global_coordinate(lx, ly) end
 
 ---@class BaseRectComponent : BaseComponent
 ---@field width number Width
@@ -1190,8 +1225,8 @@ function BaseRectComponent:set_fixed_height(fixed_height) end
 
 ---@class ScreenRenderer : BaseRectComponent
 ---@field can_exit_with_esc boolean Can exit with ESC
----@field window_width number Window width
----@field window_height number Window height
+---@field window_width number Window width (read-only)
+---@field window_height number Window height (read-only)
 local ScreenRenderer = {}
 
 ---Open screen
@@ -1199,6 +1234,24 @@ function ScreenRenderer:open() end
 
 ---Close screen
 function ScreenRenderer:close() end
+
+---Set key down hook
+---@param fn fun(keyCode: number, scanCode: number, modifiers: number) Function to execute when key is pressed
+function ScreenRenderer:set_key_down_hook(fn) end
+
+---Clear key down hook
+function ScreenRenderer:clear_key_down_hook() end
+
+---Set key up hook
+---@param fn fun(keyCode: number, scanCode: number, modifiers: number) Function to execute when key is released
+function ScreenRenderer:set_key_up_hook(fn) end
+
+---Clear key up hook
+function ScreenRenderer:clear_key_up_hook() end
+
+---Set whether can exit with ESC
+---@param can_exit boolean
+function ScreenRenderer:set_can_exit_with_esc(can_exit) end
 
 ---@class HudRenderer : BaseRectComponent
 local HudRenderer = {}
